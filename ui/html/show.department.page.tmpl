@@ -1,0 +1,13 @@
+{{template "base" .}}
+{{define "title"}}Department #{{.Snippet.ID}}{{end}}
+{{define "main"}}
+{{with .Snippet}}
+<div class='snippet'>
+<div class='metadata'>
+<strong>{{.Dep_name}}</strong>
+<span>#{{.ID}}</span>
+</div>
+<pre><code>{{.Staff_quantity}}</code></pre>
+</div>
+{{end}}
+{{end}}
