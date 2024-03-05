@@ -1,0 +1,25 @@
+{{template "base" .}}
+{{define "title"}}Toy #{{.Toy.ID}}{{end}}
+{{define "main"}}
+{{with .Toy}}
+<div class='snippet'>
+<div class='metadata'>
+<strong>{{.Name}}</strong>
+<span>#{{.ID}}</span>
+</div>
+<pre><code>{{.Description}}</code></pre>
+<div class='metadata'>
+<!-- Use the new template function here -->
+<strong>{{.Tokens}}</strong>
+</div>
+<div>
+
+
+
+</div>
+
+<tr>
+
+</div>
+{{end}}
+{{end}}

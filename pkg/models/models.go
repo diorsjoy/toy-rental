@@ -42,3 +42,10 @@ type User struct {
 	Created        time.Time
 	Active         bool
 }
+
+type Toy struct {
+	ID          int
+	Name        string
+	Description string
+	Tokens      int
+}

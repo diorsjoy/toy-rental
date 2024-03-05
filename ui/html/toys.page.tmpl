@@ -1,0 +1,24 @@
+{{template "base" .}}
+{{define "title"}}Home{{end}}
+{{define "main"}}
+<h2>Browse Toys</h2>
+{{if .Toys}}
+<table>
+<tr>
+<th>Title</th>
+<th>Tokens</th>
+<th>ID</th>
+</tr>
+{{range .Toys}}
+<tr>
+<!-- Use the new semantic URL style-->
+<td><a href='/toys/{{.ID}}'>{{.Name}}</a></td>
+<td>{{.Tokens}}</td>
+<td>#{{.ID}}</td>
+</tr>
+{{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}}
+{{end}}

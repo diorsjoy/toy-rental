@@ -276,3 +276,67 @@ func (app *application) adminPanel(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
+
+func (app *application) showToys(w http.ResponseWriter, r *http.Request) {
+	t, err := app.snippets.GetToys()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.render(w, r, "toys.page.tmpl", &templateData{
+		Toys: t,
+	})
+
+}
+
+func (app *application) showToy(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	s, err := app.snippets.GetToy(id)
+
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	app.render(w, r, "toy.page.tmpl", &templateData{
+		Toy: s,
+	})
+
+}
+
+func (app *application) createToy(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	form := forms.New(r.PostForm)
+	form.Required("name", "description", "tokens")
+	form.MaxLength("title", 100)
+	if !form.Valid() {
+		app.render(w, r, "createT.page.tmpl", &templateData{Form: form})
+		return
+	}
+	id, err := app.snippets.InsertToy(form.Get("name"), form.Get("description"), form.Get("tokens"))
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.session.Put(r, "flash", "Toy successfully created!")
+	http.Redirect(w, r, fmt.Sprintf("/toys/%d", id), http.StatusSeeOther)
+}
+
+func (app *application) createToyForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "createT.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
+}

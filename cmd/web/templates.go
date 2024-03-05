@@ -20,6 +20,8 @@ type templateData struct {
 	IsAuthenticated bool
 	IsTeacher       bool
 	IsAdmin         bool
+	Toys            []*models.Toy
+	Toy             *models.Toy
 	Snippet         *models.Snippet
 	Snippets        []*models.Snippet
 }
