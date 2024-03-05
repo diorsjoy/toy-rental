@@ -1,0 +1,24 @@
+{{template "base" .}}
+ {{define "title"}}Departments{{end}}
+ {{define "main"}}
+    <h2>Departments</h2>
+    {{if .Snippets}}
+     <table>
+        <tr>
+            <th>Department</th>
+            <th>Staff Quantity</th>
+            <th>ID</th>
+        </tr>
+        {{range .Snippets}}
+        <tr>
+            <!-- Use the new semantic URL style-->
+            <td><a href='/department/{{.ID}}'>{{.Dep_name}}</a></td>
+            <td>{{.Staff_quantity}}</td>
+            <td>#{{.ID}}</td>
+        </tr>
+        {{end}}
+    </table>
+    {{else}}
+        <p>There's nothing to see here... yet!</p>
+    {{end}}
+ {{end}}

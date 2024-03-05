@@ -1,0 +1,24 @@
+{{template "base" .}}
+{{define "title"}}Student{{end}}
+{{define "main"}}
+<h2>Educational process</h2>
+{{if .Snippets}}
+<table>
+<tr>
+<th>Title</th>
+<th>Content</th>
+<th>ID</th>
+</tr>
+{{range .Snippets}}
+<tr>
+<td>{{.Title}}</td>
+<!-- Use the new template function here -->
+<td>{{.Content}}</td>
+<td>{{.ID}}</td>
+</tr>
+{{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}}
+{{end}}
