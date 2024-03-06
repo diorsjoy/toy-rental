@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the Oyna web application! This application is designed to provide a platform for toy rental services, allowing users to explore, rent, and provide feedback on various toys. The codebase is written in Go (Golang) and utilizes the Gorilla web toolkit for routing.
+Welcome to the Oyna Web application! This application is designed to provide a platform for toy rental services, allowing users to explore, rent, and provide feedback on various toys. The codebase is written in Go (Golang) and utilizes the Gorilla web toolkit for routing.
 
 ## Table of Contents
 
