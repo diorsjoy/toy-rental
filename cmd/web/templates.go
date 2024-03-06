@@ -19,15 +19,10 @@ type templateData struct {
 	CurrentYear     int
 	IsAuthenticated bool
 	IsAdmin         bool
-<<<<<<< Updated upstream
-	Snippet         *models.Snippet
-	Snippets        []*models.Snippet
-=======
 	Toys            []*models.Toy
 	Toy             *models.Toy
 	Feedback        *models.Feedback
 	Feedbacks       []*models.Feedback
->>>>>>> Stashed changes
 }
 
 // Create a humanDate function which returns a nicely formatted string

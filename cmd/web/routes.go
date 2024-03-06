@@ -23,11 +23,7 @@ func (app *application) routes() http.Handler {
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 	mux.Get("/user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
-
-<<<<<<< Updated upstream
-	mux.Get("/department/create", dynamicMiddleware.Append(app.requireRoleTeacher).ThenFunc(app.createDepartmentForm))
-	mux.Post("/department/create", dynamicMiddleware.Append(app.requireRoleTeacher).ThenFunc(app.createDepartment))
-=======
+	
 	mux.Get("/toys/create", dynamicMiddleware.Append(app.requireRoleAdmin).ThenFunc(app.createToyForm))
 	mux.Post("/toys/create", dynamicMiddleware.Append(app.requireRoleAdmin).ThenFunc(app.createToy))
 
@@ -36,7 +32,6 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/feedback/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createFeedbackForm))
 	mux.Post("/feedback/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createFeedback))
->>>>>>> Stashed changes
 
 	mux.Get("/feedbacks", dynamicMiddleware.ThenFunc(app.Feedbacks))
 	mux.Get("/feedback/:id", dynamicMiddleware.ThenFunc(app.showFeedback))

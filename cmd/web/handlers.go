@@ -206,8 +206,6 @@ func (app *application) adminPanel(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
-<<<<<<< Updated upstream
-=======
 
 func (app *application) showToys(w http.ResponseWriter, r *http.Request) {
 	t, err := app.toys.GetToys()
@@ -272,4 +270,3 @@ func (app *application) createToyForm(w http.ResponseWriter, r *http.Request) {
 		Form: forms.New(nil),
 	})
 }
->>>>>>> Stashed changes
