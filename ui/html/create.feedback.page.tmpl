@@ -1,0 +1,30 @@
+ {{template "base" .}}
+ {{define "title"}}Create a new feedback{{end}}
+ {{define "main"}}
+ <form action='/feedback/create' method='POST'>
+     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+     {{with .Form}}
+        <div>
+            <label>Your name:</label>
+            {{with .Errors.Get "name"}}
+                <label class='error'>{{.}}</label>
+            {{end}}
+            <input type='text' name='name' value='{{.Get "name"}}'>
+        </div>
+        <div>
+            <label>Content:</label>
+            {{with .Errors.Get "content"}}
+                <label class='error'>{{.}}</label>
+            {{end}}
+            <input type='text' name='content' value='{{.Get "content"}}'>
+        </div>
+        <div>
+            <label>Stars:</label>
+            <input type='number' name='stars' value='{{.Get "stars"}}'>
+        </div>
+        <div>
+            <input type='submit' value='Publish Feedback'>
+        </div>
+        {{end}}
+ </form>
+ {{end}}

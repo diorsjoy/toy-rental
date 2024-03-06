@@ -20,18 +20,12 @@ var (
 	ErrEmailDoesNotExist = errors.New("models: email does not exist")
 )
 
-type Snippet struct {
-	ID             int
-	Title          string
-	Content        string
-	Dep_name       string
-	Staff_quantity int
-	Created        time.Time
-	Expires        time.Time
+type Feedback struct {
+	ID      int
+	Name    string
+	Content string
+	Stars   int
 }
-
-// Define a new User type. Notice how the field names and types align
-// with the columns in the database `users` table?
 
 type User struct {
 	ID             int

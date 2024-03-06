@@ -1,11 +1,11 @@
 package main
 
 import (
-	"almasmagzumov.net/snippetbox/pkg/models/mysql"
 	"crypto/tls"
 	"database/sql"
 	"flag"
 	"github.com/golangcollege/sessions"
+	"github.com/oynaToys/pkg/models/mysql"
 	"html/template"
 	"log"
 	"net/http"
@@ -24,14 +24,15 @@ type application struct {
 	session       *sessions.Session
 	errorLog      *log.Logger
 	infoLog       *log.Logger
-	snippets      *mysql.SnippetModel
+	feedbacks     *mysql.FeedbacksModel
+	toys          *mysql.ToysModel
 	users         *mysql.UserModel
 	templateCache map[string]*template.Template
 }
 
 func main() {
 	addr := flag.String("addr", "localhost:4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "web:pass@/oyna?parseTime=true", "MySQL data source name")
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
 	flag.Parse()
 
@@ -53,7 +54,8 @@ func main() {
 		errorLog:      errorLog,
 		infoLog:       infoLog,
 		session:       session,
-		snippets:      &mysql.SnippetModel{DB: db},
+		feedbacks:     &mysql.FeedbacksModel{DB: db},
+		toys:          &mysql.ToysModel{DB: db},
 		templateCache: templateCache,
 		users:         &mysql.UserModel{DB: db},
 	}

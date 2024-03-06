@@ -1,32 +1,73 @@
 package main
 
 import (
-	"almasmagzumov.net/snippetbox/pkg/forms"
-	"almasmagzumov.net/snippetbox/pkg/models"
 	"errors"
 	"fmt"
+	"github.com/oynaToys/pkg/forms"
+	"github.com/oynaToys/pkg/models"
 	"net/http"
 	"strconv"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
-	s, err := app.snippets.Latest()
+	s, err := app.toys.Latest()
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	app.render(w, r, "home.page.tmpl", &templateData{
-		Snippets: s,
+	app.render(w, r, "toys.page.tmpl", &templateData{
+		Toys: s,
 	})
 }
-func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
+
+func (app *application) createFeedbackForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "create.feedback.page.tmpl", &templateData{
+		// Pass a new empty forms.Form object to the template.
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) createFeedback(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	form := forms.New(r.PostForm)
+	form.Required("name", "stars")
+
+	if !form.Valid() {
+		app.render(w, r, "create.feedback.page.tmpl", &templateData{Form: form})
+		return
+	}
+	id, err := app.feedbacks.InsertFeedback(form.Get("name"), form.Get("content"), form.Get("stars"))
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.session.Put(r, "flash", "Feedback successfully created!")
+	http.Redirect(w, r, fmt.Sprintf("/feedback/%d", id), http.StatusSeeOther)
+}
+
+func (app *application) Feedbacks(w http.ResponseWriter, r *http.Request) {
+	s, err := app.feedbacks.ShowFeedbacks()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.render(w, r, "feedbacks.page.tmpl", &templateData{
+		Feedbacks: s,
+	})
+}
+
+func (app *application) showFeedback(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
 		app.notFound(w)
 		return
 	}
-	s, err := app.snippets.Get(id)
+	s, err := app.feedbacks.GetFeedback(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
@@ -35,119 +76,8 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	app.render(w, r, "show.page.tmpl", &templateData{
-		Snippet: s,
-	})
-}
-
-func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "create.page.tmpl", &templateData{
-		// Pass a new empty forms.Form object to the template.
-		Form: forms.New(nil),
-	})
-}
-
-func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
-		return
-	}
-	form := forms.New(r.PostForm)
-	form.Required("title", "content", "expires")
-	form.MaxLength("title", 100)
-	form.PermittedValues("expires", "365", "7", "1")
-	if !form.Valid() {
-		app.render(w, r, "create.page.tmpl", &templateData{Form: form})
-		return
-	}
-	id, err := app.snippets.Insert(form.Get("title"), form.Get("content"), form.Get("expires"))
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	// Use the Put() method to add a string value ("Your snippet was saved
-	// successfully!") and the corresponding key ("flash") to the session
-	// data. Note that if there's no existing session for the current user
-	// (or their session has expired) then a new, empty, session for them
-	// will automatically be created by the session middleware.
-	app.session.Put(r, "flash", "Article successfully created!")
-	http.Redirect(w, r, fmt.Sprintf("/snippet/%d", id), http.StatusSeeOther)
-}
-
-func (app *application) students(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/students" {
-		app.notFound(w)
-		return
-	}
-	s, err := app.snippets.Students()
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	app.render(w, r, "students.page.tmpl", &templateData{
-		Snippets: s,
-	})
-}
-
-func (app *application) createDepartmentForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "create.department.page.tmpl", &templateData{
-		// Pass a new empty forms.Form object to the template.
-		Form: forms.New(nil),
-	})
-}
-
-func (app *application) createDepartment(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
-		return
-	}
-	form := forms.New(r.PostForm)
-	form.Required("dep_name", "staff_quantity")
-	//form.MaxLength("title", 100)
-
-	if !form.Valid() {
-		app.render(w, r, "create.department.page.tmpl", &templateData{Form: form})
-		return
-	}
-	id, err := app.snippets.InsertDepartments(form.Get("dep_name"), form.Get("staff_quantity"))
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	app.session.Put(r, "flash", "Department successfully created!")
-	http.Redirect(w, r, fmt.Sprintf("/department/%d", id), http.StatusSeeOther)
-}
-
-func (app *application) Departments(w http.ResponseWriter, r *http.Request) {
-	s, err := app.snippets.ShowDepartments()
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	app.render(w, r, "departments.page.tmpl", &templateData{
-		Snippets: s,
-	})
-}
-
-func (app *application) showDepartment(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
-	if err != nil || id < 1 {
-		app.notFound(w)
-		return
-	}
-	s, err := app.snippets.GetDepartment(id)
-	if err != nil {
-		if errors.Is(err, models.ErrNoRecord) {
-			app.notFound(w)
-		} else {
-			app.serverError(w, err)
-		}
-		return
-	}
-	app.render(w, r, "show.department.page.tmpl", &templateData{
-		Snippet: s,
+	app.render(w, r, "show.feedback.page.tmpl", &templateData{
+		Feedback: s,
 	})
 }
 
@@ -260,7 +190,7 @@ func (app *application) adminPanel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.users.SetTeacher(form.Get("email"))
+	err = app.users.DeleteUser(form.Get("email"))
 
 	if err != nil {
 		if errors.Is(err, models.ErrEmailDoesNotExist) {
@@ -272,7 +202,74 @@ func (app *application) adminPanel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.session.Put(r, "flash", "Role was set successfully")
+	app.session.Put(r, "flash", "User was deleted successfully!")
 
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
+<<<<<<< Updated upstream
+=======
+
+func (app *application) showToys(w http.ResponseWriter, r *http.Request) {
+	t, err := app.toys.GetToys()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.render(w, r, "toys.page.tmpl", &templateData{
+		Toys: t,
+	})
+
+}
+
+func (app *application) showToy(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	s, err := app.toys.GetToy(id)
+
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	app.render(w, r, "toy.page.tmpl", &templateData{
+		Toy: s,
+	})
+
+}
+
+func (app *application) createToy(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	form := forms.New(r.PostForm)
+	form.Required("name", "description", "tokens")
+	form.MaxLength("title", 100)
+	if !form.Valid() {
+		app.render(w, r, "create.toy.page.tmpl", &templateData{Form: form})
+		return
+	}
+	id, err := app.toys.InsertToy(form.Get("name"), form.Get("description"), form.Get("tokens"))
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.session.Put(r, "flash", "Toy successfully created!")
+	http.Redirect(w, r, fmt.Sprintf("/toys/%d", id), http.StatusSeeOther)
+}
+
+func (app *application) createToyForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "create.toy.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
+}
+>>>>>>> Stashed changes

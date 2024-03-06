@@ -1,8 +1,8 @@
 package main
 
 import (
-	"almasmagzumov.net/snippetbox/pkg/forms"
-	"almasmagzumov.net/snippetbox/pkg/models"
+	"github.com/oynaToys/pkg/forms"
+	"github.com/oynaToys/pkg/models"
 	"html/template"
 	"path/filepath"
 	"time"
@@ -18,10 +18,16 @@ type templateData struct {
 	Form            *forms.Form
 	CurrentYear     int
 	IsAuthenticated bool
-	IsTeacher       bool
 	IsAdmin         bool
+<<<<<<< Updated upstream
 	Snippet         *models.Snippet
 	Snippets        []*models.Snippet
+=======
+	Toys            []*models.Toy
+	Toy             *models.Toy
+	Feedback        *models.Feedback
+	Feedbacks       []*models.Feedback
+>>>>>>> Stashed changes
 }
 
 // Create a humanDate function which returns a nicely formatted string

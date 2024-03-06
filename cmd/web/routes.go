@@ -19,21 +19,27 @@ func (app *application) routes() http.Handler {
 	// Routes
 	mux.Get("/", dynamicMiddleware.ThenFunc(app.home))
 
-	mux.Get("/snippet/create", dynamicMiddleware.Append(app.requireRoleTeacher).ThenFunc(app.createSnippetForm))
-	mux.Post("/snippet/create", dynamicMiddleware.Append(app.requireRoleTeacher).ThenFunc(app.createSnippet))
-	mux.Get("/snippet/:id", dynamicMiddleware.ThenFunc(app.showSnippet))
-
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 	mux.Get("/user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
 
+<<<<<<< Updated upstream
 	mux.Get("/department/create", dynamicMiddleware.Append(app.requireRoleTeacher).ThenFunc(app.createDepartmentForm))
 	mux.Post("/department/create", dynamicMiddleware.Append(app.requireRoleTeacher).ThenFunc(app.createDepartment))
+=======
+	mux.Get("/toys/create", dynamicMiddleware.Append(app.requireRoleAdmin).ThenFunc(app.createToyForm))
+	mux.Post("/toys/create", dynamicMiddleware.Append(app.requireRoleAdmin).ThenFunc(app.createToy))
 
-	mux.Get("/students", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.students))
-	mux.Get("/department", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.Departments))
-	mux.Get("/department/:id", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.showDepartment))
+	mux.Get("/toys", dynamicMiddleware.ThenFunc(app.showToys))
+	mux.Get("/toys/:id", dynamicMiddleware.ThenFunc(app.showToy))
+
+	mux.Get("/feedback/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createFeedbackForm))
+	mux.Post("/feedback/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createFeedback))
+>>>>>>> Stashed changes
+
+	mux.Get("/feedbacks", dynamicMiddleware.ThenFunc(app.Feedbacks))
+	mux.Get("/feedback/:id", dynamicMiddleware.ThenFunc(app.showFeedback))
 	mux.Post("/user/logout", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.logoutUser))
 
 	// Routes for admin only

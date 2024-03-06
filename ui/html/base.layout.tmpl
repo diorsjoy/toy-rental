@@ -6,36 +6,42 @@
         <title>{{template "title" .}} - Home</title>
         <link rel='stylesheet' href='/static/css/main.css'>
         <link rel='shortcut icon' href='/static/img/logoFavicon.png' type='image/x-icon'>
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700'>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet">
     </head>
     <body>
         <header>
             <h1>
                 <img src="/static/img/logoFullHD.png" alt="AITU logo">
-                <a href='/'>Astana IT University</a>
+                <a href='/'>OYNA - child's dream, your reality</a>
             </h1>
         </header>
         <nav>
         <div class="navbar">
-            <a href='/'>Articles</a>
-            {{if .IsTeacher}}
+            <a href='/'>Toys</a>
+            {{if .IsAuthenticated}}
             <div class="dropdown">
                 <button class="dropbtn">Create</button>
                 <div class="dropdown-content">
-                    <a href='/snippet/create'>Create article</a>
-                    <a href='/department/create'>Create a Department</a>
+                    <a href='/feedback/create'>Write feedback</a>
                 </div>
             </div>
             {{end}}
-            {{if .IsAuthenticated}}
+            {{if .IsAdmin}}
+                <div class="dropdown">
+                    <button class="dropbtn">Create</button>
+                    <div class="dropdown-content">
+                        <a href='/toys/create'>Create toy</a>
+                    </div>
+                </div>
+            {{end}}
             <div class="dropdown">
                 <button class="dropbtn">Information</button>
                 <div class="dropdown-content">
-                    <a href='/students'>Students</a>
-                    <a href='/department'>Departments</a>
+                    <a href='/feedbacks'>Feedbacks</a>
                 </div>
             </div>
-            {{end}}
         </div>
         <div>
             {{if .IsAuthenticated}}

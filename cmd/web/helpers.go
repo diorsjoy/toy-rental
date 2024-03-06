@@ -44,7 +44,7 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 	td.Flash = app.session.PopString(r, "flash")
 	// Add the authentication status to the template data.
 	td.IsAuthenticated = app.isAuthenticated(r)
-	td.IsTeacher = app.isTeacher(r)
+	//td.IsTeacher = app.isTeacher(r)
 	td.IsAdmin = app.isAdmin(r)
 	return td
 }
@@ -74,21 +74,21 @@ func (app *application) isAuthenticated(r *http.Request) bool {
 	return isAuthenticated
 }
 
-func (app *application) isTeacher(r *http.Request) bool {
-	userID := app.session.Get(r, "authenticatedUserID")
-
-	user, err := app.users.GetRole(userID)
-	if err != nil {
-		app.isAuthenticated(r)
-		return false
-	}
-
-	if user.Role == "admin" || user.Role == "teacher" {
-		return true
-	}
-
-	return false
-}
+//func (app *application) isTeacher(r *http.Request) bool {
+//	userID := app.session.Get(r, "authenticatedUserID")
+//
+//	user, err := app.users.GetRole(userID)
+//	if err != nil {
+//		app.isAuthenticated(r)
+//		return false
+//	}
+//
+//	if user.Role == "admin" || user.Role == "teacher" {
+//		return true
+//	}
+//
+//	return false
+//}
 
 func (app *application) isAdmin(r *http.Request) bool {
 	userID := app.session.Get(r, "authenticatedUserID")

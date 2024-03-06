@@ -1,0 +1,35 @@
+{{template "base" .}}
+{{define "title"}}Create a New Toy{{end}}
+{{define "main"}}
+<form action='/toys/create' method='POST'>
+<input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+{{with .Form}}
+<div>
+<label>Name:</label>
+{{with .Errors.Get "name"}}
+<label class='error'>{{.}}</label>
+{{end}}
+<input type='text' name='name' value='{{.Get "name"}}'>
+</div>
+<div>
+<label>Description:</label>
+{{with .Errors.Get "description"}}
+<label class='error'>{{.}}</label>
+{{end}}
+<textarea name='description'>{{.Get "description"}}</textarea>
+</div>
+<div>
+<label>Tokens</label>
+{{with .Errors.Get "tokens"}}
+<label class='error'>{{.}}</label>
+{{end}}
+<input type='text' name='tokens' value='{{.Get "tokens"}}'>
+</div>
+<div>
+
+<input type='submit' value='Publish Toy'>
+</div>
+{{end}}
+</form>
+{{end}}
+
