@@ -1,19 +1,21 @@
 {{template "base" .}}
- {{define "title"}}Departments{{end}}
+ {{define "title"}}Feedbacks{{end}}
  {{define "main"}}
-    <h2>Departments</h2>
-    {{if .Snippets}}
+    <h2>Feedbacks</h2>
+    {{if .Feedbacks}}
      <table>
         <tr>
-            <th>Department</th>
-            <th>Staff Quantity</th>
+            <th>Name</th>
+            <th>Content</th>
+            <th>Stars</th>
             <th>ID</th>
         </tr>
-        {{range .Snippets}}
+        {{range .Feedbacks}}
         <tr>
             <!-- Use the new semantic URL style-->
-            <td><a href='/department/{{.ID}}'>{{.Dep_name}}</a></td>
-            <td>{{.Staff_quantity}}</td>
+            <td><a href='/feedback/{{.ID}}'>{{.Name}}</a></td>
+            <td>{{.Content}}</td>
+            <td>{{.Stars}}</td>
             <td>#{{.ID}}</td>
         </tr>
         {{end}}

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"almasmagzumov.net/snippetbox/pkg/models"
 	"context"
 	"errors"
 	"fmt"
 	"github.com/justinas/nosurf"
+	"github.com/oynaToys/pkg/models"
 	"net/http"
 )
 
@@ -57,17 +57,6 @@ func (app *application) requireAuthentication(next http.Handler) http.Handler {
 		// other intermediary cache).
 		w.Header().Add("Cache-Control", "no-store")
 		// And call the next handler in the chain.
-		next.ServeHTTP(w, r)
-	})
-}
-
-func (app *application) requireRoleTeacher(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !app.isTeacher(r) {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-		w.Header().Add("Cache-Control", "no-store")
 		next.ServeHTTP(w, r)
 	})
 }

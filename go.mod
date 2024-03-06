@@ -1,4 +1,4 @@
-module almasmagzumov.net/snippetbox
+module github.com/oynaToys
 
 go 1.20
 

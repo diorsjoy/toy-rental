@@ -2,7 +2,7 @@
 {{define "title"}}Admin Panel{{end}}
 {{define "main"}}
     <form action='/admin' method='POST'>
-        <h2>Give a teacher role</h2>
+        <h2>Delete user by email:</h2>
         <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
         {{with .Form}}
             <div>
