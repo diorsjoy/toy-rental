@@ -48,6 +48,20 @@ The home endpoint displays the latest toys available for rent. Users can explore
 3. Navigate to the project directory: `cd oynaToys`
 4. Run the application: `go run main.go`
 
+## Project screenshots
+1. Main page / Toys catalogue
+![image](https://github.com/diorsjoy/toy-rental/assets/134860120/80782724-d42e-4c13-bc6b-9de54f2d99ae)
+2. Toy page
+![image](https://github.com/diorsjoy/toy-rental/assets/134860120/451146fc-5b4f-43d5-976e-bf145f3edcee)
+3. Feedbacks page
+![image](https://github.com/diorsjoy/toy-rental/assets/134860120/c555d7c2-2cdd-427b-bbd3-e0daa1b2daea)
+4. Signup page
+![image](https://github.com/diorsjoy/toy-rental/assets/134860120/661381d7-772d-41f7-8f21-ab2df1959591)
+5. Creating Toy page
+![image](https://github.com/diorsjoy/toy-rental/assets/134860120/e494cb41-9c7c-4f4f-af2b-cd04cd0f70c8)
+6. Admin page
+![image](https://github.com/diorsjoy/toy-rental/assets/134860120/1e3f7ed9-08c9-4651-beb4-04d45ee9d13d)
+
 ## Conclusion
 
 Thank you for exploring the Oyna web application. Feel free to contribute, provide feedback, or enhance the features to make it an even more exciting and user-friendly platform!
